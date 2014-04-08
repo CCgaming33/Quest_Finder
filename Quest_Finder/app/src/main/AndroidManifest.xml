@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.chadclose.questfinder.quest_finder.app.QuestPage"
+            android:label="Quest List" >
+        </activity>
+        <activity
+            android:name="com.chadclose.questfinder.quest_finder.app.QuestDetails"
+            android:label="Quest Details" >
+        </activity>
+        <activity
+            android:name="com.chadclose.questfinder.quest_finder.app.Settings"
+            android:label="Settings" >
+        </activity>
     </application>
 
 </manifest>
