@@ -20,6 +20,7 @@ public class QuestDetails extends Activity {
 
     private LatLng lObj;
     private LatLng lGiv;
+    private boolean initialZoom = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +66,16 @@ public class QuestDetails extends Activity {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 // Auto Zoom to markers
-                GoogleMap aMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
+                if(!initialZoom) {
+                    initialZoom = true;
+                    GoogleMap aMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
 
-                LatLngBounds bounds = LatLngBounds.builder().include(lGiv).include(lObj).build();
+                    LatLngBounds bounds = LatLngBounds.builder().include(lGiv).include(lObj).build();
 
-                CameraUpdate aUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);;
-                aMap.animateCamera(aUpdate);
+                    CameraUpdate aUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
 
+                    aMap.animateCamera(aUpdate);
+                }
 
 
             }
