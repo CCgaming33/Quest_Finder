@@ -6,51 +6,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.chadclose.questfinder.questfinder.app.Login">
+    tools:context="com.chadclose.questfinder.quest_finder.app.Login">
 
-    <EditText
+    <TextView
+        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/username"
-        android:layout_marginTop="63dp"
-        android:hint="Username"
-        android:editable="false"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/password"
-        android:autoText="false"
-        android:hint="Password"
-        android:layout_below="@+id/username"
-        android:layout_alignLeft="@+id/username"
-        android:layout_alignStart="@+id/username" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log In!"
-        android:id="@+id/button"
-        android:layout_below="@+id/password"
-        android:layout_marginTop="35dp"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignStart="@+id/password"
-        android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password"
-        android:onClick="onLoginButtonPressed" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remeber Username"
-        android:id="@+id/rememberUsername"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
