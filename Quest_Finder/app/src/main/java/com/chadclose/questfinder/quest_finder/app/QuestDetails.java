@@ -5,14 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class QuestDetails extends Activity {
+
+    private LatLng lObj;
+    private LatLng lGiv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +54,28 @@ public class QuestDetails extends Activity {
         // Create Markers
         GoogleMap aMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
 
-        LatLng lObj = new LatLng(lQuest.getQuestObjective().getLat(), lQuest.getQuestObjective().getLon());
+        lObj = new LatLng(lQuest.getQuestObjective().getLat(), lQuest.getQuestObjective().getLon());
         Marker questObjective = aMap.addMarker(new MarkerOptions().position(lObj).title("Quest Objective"));
 
-        LatLng lGiv = new LatLng(lQuest.getQuestGiver().getLat(), lQuest.getQuestGiver().getLon());
+        lGiv = new LatLng(lQuest.getQuestGiver().getLat(), lQuest.getQuestGiver().getLon());
         Marker questGiver = aMap.addMarker(new MarkerOptions().position(lGiv).title("Quest Giver"));
 
+        aMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                // Auto Zoom to markers
+                GoogleMap aMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
+
+                LatLngBounds bounds = LatLngBounds.builder().include(lGiv).include(lObj).build();
+
+                CameraUpdate aUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);;
+                aMap.animateCamera(aUpdate);
 
 
+
+            }
+        });
     }
 
 
