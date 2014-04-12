@@ -15,6 +15,7 @@ import java.util.Date;
  */
 public class Quest implements Serializable {
 
+    private String objId;
     private String acceptedBy;
     private int alignment;
     private boolean completed;
@@ -26,6 +27,7 @@ public class Quest implements Serializable {
 
     public Quest(ParseObject aObj)
     {
+        objId = aObj.getObjectId();
         // Quest Accepted By name
         ParseUser aAcceptedBy =  aObj.getParseUser("acceptedBy");
         if(aAcceptedBy != null) {
@@ -94,5 +96,37 @@ public class Quest implements Serializable {
 
     }
 
+    public int getFilterLevel()
+    {
+            /* Flitertype
+            0: Available
+            1: Accepted
+            2: Completed
+            3: Not visable
+            */
+        if(acceptedBy == null)
+        {
+            if (completed)
+                return 2;
+            return 0;
+        }else{
+            // Have you accepted it?
+            //if(acceptedBy.equals(ParseUser.getCurrentUser().getString("name")))
+            //{
+                if (completed) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            //}else{
+                //return 3;
+            //}
+        }
+    }
+
+    public String getObjectId()
+    {
+        return objId;
+    }
 
 }

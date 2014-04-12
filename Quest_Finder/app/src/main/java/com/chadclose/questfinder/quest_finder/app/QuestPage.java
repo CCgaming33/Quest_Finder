@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
@@ -24,11 +26,43 @@ import java.util.List;
 public class QuestPage extends Activity {
 
     ArrayList<Quest> questList = new ArrayList<Quest>();
+    private int filterType = 0;
+    /* Flitertype
+    0: Available
+    1: Accepted
+    2: Completed
+    */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_page);
+
+        // Populate filter Spinner
+        Spinner spinner = (Spinner) findViewById(R.id.filterList);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.filterType, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setId(3);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                // update list based on filterType
+                filterType = pos;
+                buildList(questList);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
 
         ListView lQuestList = (ListView)findViewById(R.id.questList);
                 lQuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -100,15 +134,35 @@ public class QuestPage extends Activity {
     {
         questList.clear();
         // create the quest list from an empty questList
-        ListView lQuestList = (ListView)findViewById(R.id.questList);
         filterAlignment();
-        QuestAdapter questListAdapater = new QuestAdapter(this, questList);
-        lQuestList.setAdapter(questListAdapater);
-
+        buildList(questList);
         // Start Progress Bar
         ProgressBar lProgress = (ProgressBar)findViewById(R.id.progressBar);
         lProgress.setVisibility(0);
+    }
 
+    private void buildList(ArrayList<Quest> aQuestList)
+    {
+        // Add Filter For Type
+        aQuestList = filterQuestType(aQuestList);
+        ListView lQuestList = (ListView)findViewById(R.id.questList);
+        QuestAdapter questListAdapater = new QuestAdapter(this, aQuestList);
+        lQuestList.setAdapter(questListAdapater);
+    }
+
+    private ArrayList<Quest> filterQuestType(ArrayList<Quest> aQuestList)
+    {
+        if(filterType != 3) {
+            ArrayList<Quest> tempList = new ArrayList<Quest>();
+            // Add all based on the filter type
+            for (Quest tempQuest : aQuestList)
+                if (tempQuest.getFilterLevel() == filterType)
+                    tempList.add(tempQuest);
+
+            return tempList;
+        }else{
+            return aQuestList;
+        }
     }
 
     private void createQuestList(List<ParseObject> objects)
