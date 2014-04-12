@@ -1,39 +1,61 @@
 package com.chadclose.questfinder.quest_finder.app;
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Chad on 4/8/14.
  */
-public class Quest implements Serializable{
+public class Quest implements Serializable {
 
-    private String title;
-    private String createdBy;
-    private String reward;
+    private String acceptedBy;
+    private int alignment;
+    private boolean completed;
     private String description;
-    private String alignment;
-    private gpsCords questObjective;
-    private gpsCords questGiver;
+    private float questObjectiveLat;
+    private float questObjectiveLon;
+    private String title;
+    private String questGiver;
 
-    public Quest()
+    public Quest(ParseObject aObj)
     {
-        title = "NA";
-        createdBy = "NA";
-        reward = "NA";
-        description = "NA";
-        alignment = "Neutral";
-    }
+        // Quest Accepted By name
+        ParseUser aAcceptedBy =  aObj.getParseUser("acceptedBy");
+        if(aAcceptedBy != null) {
+            try {
+                aAcceptedBy.fetchIfNeeded();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            acceptedBy = aAcceptedBy.getString("name");
+        }
 
-    public Quest(String aTitle, String aCreatedBy, String aReward, String aDescription, String aAlignment, gpsCords objective, gpsCords giver)
-    {
-        title = aTitle;
-        createdBy = aCreatedBy;
-        reward = aReward;
-        description = aDescription;
-        alignment = aAlignment;
-        questObjective = objective;
-        questGiver = giver;
+        alignment = aObj.getInt("alignment");
+        completed = aObj.getBoolean("completed");
+        description = aObj.getString("description");
+
+        // Quest Location
+        ParseGeoPoint aTempPoint = aObj.getParseGeoPoint("location");
+        questObjectiveLat = (float)aTempPoint.getLatitude();
+        questObjectiveLon = (float)aTempPoint.getLongitude();
+
+        title = aObj.getString("name");
+
+        // Quest Giver name
+        ParseUser aQuestGiver =  aObj.getParseUser("questGiver");
+        try {
+            aQuestGiver.fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        questGiver = aQuestGiver.getString("name");
     }
 
     public String getTitle()
@@ -43,7 +65,7 @@ public class Quest implements Serializable{
 
     public String getCreatedBy()
     {
-        return createdBy;
+        return questGiver;
     }
 
     public String getDescription()
@@ -51,24 +73,26 @@ public class Quest implements Serializable{
         return description;
     }
 
-    public String getReward()
-    {
-        return reward;
-    }
-
     public String getAlignment()
     {
-
-        return alignment;
+        if(alignment == 1)
+            return "Good";
+        if(alignment == 2)
+            return "Evil";
+        return "Neutral";
     }
 
-    public gpsCords getQuestObjective()
+    public float getQuestObjectiveLat()
     {
-        return questObjective;
+        return questObjectiveLat;
+
     }
 
-    public gpsCords getQuestGiver()
+    public float getQuestObjectiveLon()
     {
-        return questGiver;
+        return questObjectiveLon;
+
     }
+
+
 }

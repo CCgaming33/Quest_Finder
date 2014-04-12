@@ -9,10 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestPage extends Activity {
 
@@ -24,31 +31,27 @@ public class QuestPage extends Activity {
         setContentView(R.layout.activity_quest_page);
 
         ListView lQuestList = (ListView)findViewById(R.id.questList);
+                lQuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
 
-        // Init the List
-        createQuestList(lQuestList);
-
-        lQuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                // Pass the quest
-                Quest lQuestToPass = questList.get(position);
-                Intent intent = new Intent(QuestPage.this, QuestDetails.class);
-                intent.putExtra("quest", lQuestToPass);
-                startActivity(intent);
-            }
-        });
+                        // Pass the quest
+                        Quest lQuestToPass = questList.get(position);
+                        Intent intent = new Intent(QuestPage.this, QuestDetails.class);
+                        intent.putExtra("quest", lQuestToPass);
+                        startActivity(intent);
+                    }
+                });
 
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        ListView lQuestList = (ListView)findViewById(R.id.questList);
+
         // Init the List
-        createQuestList(lQuestList);
+        loadQuestList();
 
     }
 
@@ -77,46 +80,78 @@ public class QuestPage extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void createQuestList(ListView lQuestList)
-    {
-        // init quest list
-        loadQuestList();
-        filterAlignment();
-        QuestAdapter questListAdapater = new QuestAdapter(this, questList);
-
-        lQuestList.setAdapter(questListAdapater);
-
-    }
-
     private void loadQuestList()
     {
-        // Load the quest into a list
-        questList.clear();
-        questList.add(new Quest("Bandits in the Woods", "HotDogg The Bounty Hunter", "A Hug",
-                "The famed bounty hunter HotDog has requested the aid of a hero in ridding the woods of terrifying bandits who have thus far eluded his capture, as he is actually a dog, and cannot actually grab things more than 6 feet off the ground.",
-                "Good", new gpsCords(46.908588f,  -96.808991f), new gpsCords(46.8541979f,  -96.8285138f)));
-        questList.add(new Quest("Special Delivery", "Sir Jimmy The Swift", "A Dollar",
-                "Sir Jimmy was once the fastest man in the kingdom, brave as any soldier and wise as a king. Unfortunately, age catches us all in the end, and he has requested that I, his personal scribe, find a hero to deliver a package of particular importance--and protect it with their life.",
-                "Neutral", new gpsCords(46.8657639f,  -96.7363173f), new gpsCords(46.8739748f,  -96.806112f)));
-        questList.add(new Quest("Filthy Mongrel", "Prince Jack, The Iron Horse", "1000 Gold",
-                "That strange dog that everyone is treating like a bounty-hunter must go. By the order of Prince Jack, that smelly, disease ridden mongrel must be removed from our streets by any means necessary. He is disrupting the lives of ordinary citizens, and it's just really weird. Make it gone.",
-                "Evil", new gpsCords(46.892386f,  -96.799669f), new gpsCords(46.8739748f,  -96.806112f)));
+        clearQuestList();
+        // First Load Objects For Parse
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Quests");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    createQuestList(objects);
+                } else {
+                    //objectRetrievalFailed();
+                }
+            }
+        });
     }
+
+    private void clearQuestList()
+    {
+        questList.clear();
+        // create the quest list from an empty questList
+        ListView lQuestList = (ListView)findViewById(R.id.questList);
+        filterAlignment();
+        QuestAdapter questListAdapater = new QuestAdapter(this, questList);
+        lQuestList.setAdapter(questListAdapater);
+
+        // Start Progress Bar
+        ProgressBar lProgress = (ProgressBar)findViewById(R.id.progressBar);
+        lProgress.setVisibility(0);
+
+    }
+
+    private void createQuestList(List<ParseObject> objects)
+    {
+
+        // Add objects into quest list
+        for(ParseObject aObj : objects)
+            questList.add(new Quest(aObj));
+
+        // create the quest list from questList
+        ListView lQuestList = (ListView)findViewById(R.id.questList);
+        filterAlignment();
+        QuestAdapter questListAdapater = new QuestAdapter(this, questList);
+        lQuestList.setAdapter(questListAdapater);
+
+        // Start Progress Bar
+        ProgressBar lProgress = (ProgressBar)findViewById(R.id.progressBar);
+        lProgress.setVisibility(4);
+    }
+
 
     public void filterAlignment()
     {
         SharedPreferences settings = getSharedPreferences("alignment", 0);
         String alignmentStart = settings.getString("alignment", "Neutral");
-        if(!alignmentStart.equals("Neutral"))
+        Integer alignment = ParseUser.getCurrentUser().getInt("alignment");
+        if(alignment != 0)
         {
             //remove any quests of the wrong alignment
             for(int i = 0; i < questList.size(); i++)
             {
-                if(!questList.get(i).getAlignment().equals(alignmentStart))
-                {
-                    // remove from list
-                    questList.remove(i);
-                    i --;
+                if(alignment == 1) {
+                    if (!questList.get(i).getAlignment().equals("Good")) {
+                        // remove from list
+                        questList.remove(i);
+                        i--;
+                    }
+                }else{
+                    if (!questList.get(i).getAlignment().equals("Evil")) {
+                        // remove from list
+                        questList.remove(i);
+                        i--;
+                    }
                 }
             }
         }

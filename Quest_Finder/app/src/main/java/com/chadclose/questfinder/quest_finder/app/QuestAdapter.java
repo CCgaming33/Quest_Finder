@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 
 /**
@@ -29,11 +32,9 @@ public class QuestAdapter extends ArrayAdapter<Quest> {
         // Lookup view for data population
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView createdBy = (TextView) convertView.findViewById(R.id.createdBy);
-        TextView reward = (TextView) convertView.findViewById(R.id.reward);
         // Populate the data into the template view using the data object
         title.setText(quest.getTitle());
         createdBy.setText("Posted By: " + quest.getCreatedBy());
-        reward.setText("Reward: " + quest.getReward());
         // Return the completed view to render on screen
         return convertView;
     }

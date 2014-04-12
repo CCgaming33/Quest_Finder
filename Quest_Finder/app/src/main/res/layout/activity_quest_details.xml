@@ -33,23 +33,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Reward: "
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_toLeftOf="@+id/postedBy" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Some Descriptions"
         android:id="@+id/description"
+        android:layout_below="@+id/textView7"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView7" />
+        android:layout_alignRight="@+id/textView7"
+        android:layout_alignEnd="@+id/textView7" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,33 +57,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Reward Text Goes Here"
-        android:id="@+id/rewardInfo"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Descripition:"
         android:id="@+id/textView7"
-        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/postedBy"
+        android:layout_below="@+id/textView2" />
 
     <fragment
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/mapView"
-        android:layout_below="@+id/description"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/description"
         android:layout_alignEnd="@+id/description"
         android:layout_alignParentEnd="false"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/description" />
 
 
 </RelativeLayout>

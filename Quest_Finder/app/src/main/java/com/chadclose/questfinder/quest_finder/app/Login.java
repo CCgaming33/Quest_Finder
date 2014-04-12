@@ -11,6 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
 public class Login extends Activity {
 
     @Override
@@ -20,7 +24,7 @@ public class Login extends Activity {
 
 
         // Load preferences
-        boolean rememberUser = loadRememberPassword();
+        boolean rememberUser = loadRememberUser();
         CheckBox rememberUserBox = (CheckBox) findViewById(R.id.rememberUsername);
         rememberUserBox.setChecked(rememberUser);
 
@@ -40,29 +44,54 @@ public class Login extends Activity {
 
     public void onLoginButtonPressed(View view)
     {
-        // Check for the username to be Lancelot and
-        // the password to be arthurDoesntKnow
+        // Try to log user in
         EditText lUsername = (EditText)findViewById(R.id.username);
         EditText lPassword = (EditText)findViewById(R.id.password);
-        if(lUsername.getText().toString().equals("Lancelot"))
-        {
-            if(lPassword.getText().toString().equals("arthurDoesntKnow"))
-            {
-                saveUserName(lUsername.getText().toString());
-                // Go to QuestPage
-                Intent intent = new Intent(this, QuestPage.class);
-                startActivity(intent);
-            }else{
-                // Password is incorrect
-                lPassword.setError("Incorrect");
+
+        ParseUser.logInInBackground(lUsername.getText().toString(), lPassword.getText().toString(), new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+
+                    // Save username for remember password
+                    if(loadRememberUser())
+                    {
+                        saveUserName(ParseUser.getCurrentUser().getUsername());
+                    }else{
+                        saveUserName("");
+                    }
+
+                    // Navigate to quest page
+                    goToQuestPage();
+                } else {
+                    // Set Error Messages
+                    setErrorMessages();
+                }
             }
-        }else{
-            // User is incorrect
-            lUsername.setError("Incorrect");
-        }
+        });
+
         //Remove
+        //Intent intent = new Intent(this, QuestPage.class);
+        //startActivity(intent);
+    }
+
+    public void onSignUpClick(View view)
+    {
+        Intent intent = new Intent(this, signUp.class);
+        startActivity(intent);
+    }
+
+    public void goToQuestPage()
+    {
         Intent intent = new Intent(this, QuestPage.class);
         startActivity(intent);
+    }
+
+    public void setErrorMessages()
+    {
+        EditText lUsername = (EditText)findViewById(R.id.username);
+        EditText lPassword = (EditText)findViewById(R.id.password);
+        lUsername.setError("Incorrect");
+        lPassword.setError("Incorrect");
     }
 
     public void loadUserName()
@@ -74,9 +103,9 @@ public class Login extends Activity {
         lUsername.setText(username);
     }
 
-    public boolean loadRememberPassword()
+    public boolean loadRememberUser()
     {
-        // Return the remember password preference
+        // Return the remember username preference
         SharedPreferences settings = getSharedPreferences("rememberUser", 0);
         boolean rememberUser = settings.getBoolean("rememberUser", false);
         return rememberUser;

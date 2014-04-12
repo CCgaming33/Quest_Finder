@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.google.android.gms:play-services:+'
     compile files('libs/android-support-v4.jar')
+    compile files('libs/Parse-1.4.3.jar')
 }

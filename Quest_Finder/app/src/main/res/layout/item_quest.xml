@@ -20,10 +20,4 @@
         android:id="@+id/createdBy"
         android:password="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Reward"
-        android:id="@+id/reward" />
 </LinearLayout>

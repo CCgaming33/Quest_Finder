@@ -3,11 +3,15 @@ package com.chadclose.questfinder.quest_finder.app;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.parse.ParseUser;
 
 public class Settings extends Activity {
 
@@ -17,7 +21,9 @@ public class Settings extends Activity {
         setContentView(R.layout.activity_settings);
 
         // load username
-        loadUserName();
+        String username = ParseUser.getCurrentUser().getString("name");
+        EditText lUsername = (EditText) findViewById(R.id.editName);
+        lUsername.setText(username);
 
         // Populate Spinner
         Spinner spinner = (Spinner) findViewById(R.id.alignment);
@@ -26,26 +32,19 @@ public class Settings extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        // Load preferences
-        SharedPreferences settings = getSharedPreferences("alignment", 0);
-        String alignmentStart = settings.getString("alignment", "Neutral");
-        int lStartPosition = adapter.getPosition(alignmentStart);
+        // Load Alignment
+        int lStartPosition = ParseUser.getCurrentUser().getInt("alignment");
         spinner.setSelection(lStartPosition);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                // update alignment
+                ParseUser yourUser = ParseUser.getCurrentUser();
+                yourUser.put("alignment", pos);
+                yourUser.saveInBackground();
 
-                // Save the selection
-                SharedPreferences settings = getSharedPreferences("alignment", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                Spinner spinner = (Spinner) findViewById(R.id.alignment);
-                editor.putString("alignment", spinner.getSelectedItem().toString());
-                // Commit the edits!
-                editor.commit();
             }
 
             @Override
@@ -56,15 +55,30 @@ public class Settings extends Activity {
 
         });
 
-    }
+        // changing name
+        EditText nameChange = (EditText)findViewById(R.id.editName);
+
+        nameChange.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                // Update name
+                ParseUser yourUser = ParseUser.getCurrentUser();
+                yourUser.put("name", charSequence.toString());
+                yourUser.saveInBackground();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
-    public void loadUserName()
-    {
-        SharedPreferences settingsUser = getSharedPreferences("username", 0);
-        String username = settingsUser.getString("username", "");
-        EditText lUsername = (EditText) findViewById(R.id.editName);
-        lUsername.setText(username);
     }
 
 

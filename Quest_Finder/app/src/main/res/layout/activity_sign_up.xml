@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/username"
+        android:id="@+id/usernameCreate"
         android:layout_marginTop="63dp"
         android:hint="Username"
         android:editable="false"
@@ -25,45 +25,45 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/password"
+        android:id="@+id/passwordCreate"
         android:autoText="false"
         android:hint="Password"
-        android:layout_below="@+id/username"
-        android:layout_alignLeft="@+id/username"
-        android:layout_alignStart="@+id/username" />
+        android:layout_below="@+id/usernameCreate"
+        android:layout_alignLeft="@+id/usernameCreate"
+        android:layout_alignStart="@+id/usernameCreate" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log In!"
-        android:id="@+id/button"
-        android:layout_below="@+id/password"
-        android:layout_marginTop="35dp"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignStart="@+id/password"
-        android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password"
-        android:onClick="onLoginButtonPressed" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remeber Username"
-        android:id="@+id/rememberUsername"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up!"
-        android:id="@+id/signUp"
+        android:text="Submit!"
+        android:id="@+id/submit"
         android:singleLine="true"
-        android:onClick="onSignUpClick"
-        android:layout_below="@+id/button"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:layout_below="@+id/alignmentChoice"
+        android:layout_alignLeft="@+id/alignmentChoice"
+        android:layout_alignStart="@+id/alignmentChoice"
+        android:layout_alignRight="@+id/alignmentChoice"
+        android:layout_alignEnd="@+id/alignmentChoice"
+        android:onClick="onSubmitClick" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alignmentChoice"
+        android:layout_below="@+id/nameCreate"
+        android:layout_alignLeft="@+id/nameCreate"
+        android:layout_alignStart="@+id/nameCreate"
+        android:layout_alignRight="@+id/nameCreate"
+        android:layout_alignEnd="@+id/nameCreate" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/nameCreate"
+        android:layout_below="@+id/passwordCreate"
+        android:layout_alignLeft="@+id/passwordCreate"
+        android:layout_alignStart="@+id/passwordCreate"
+        android:hint="Name" />
 
 </RelativeLayout>

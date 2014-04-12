@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+
 public class QuestDetails extends Activity {
 
     private LatLng lObj;
@@ -35,19 +36,16 @@ public class QuestDetails extends Activity {
         //Text views
         TextView lQuestName = (TextView)findViewById(R.id.questName);
         TextView lPostedBy = (TextView)findViewById(R.id.postedBy);
-        TextView lReward = (TextView)findViewById(R.id.rewardInfo);
         TextView lDescription = (TextView)findViewById(R.id.description);
 
         if(lQuest!=null)
         {
             lQuestName.setText(lQuest.getTitle());
             lPostedBy.setText(lQuest.getCreatedBy());
-            lReward.setText(lQuest.getReward());
             lDescription.setText(lQuest.getDescription());
         }else{
             lQuestName.setText("ERROR");
             lPostedBy.setText("ERROR");
-            lReward.setText("ERROR");
             lDescription.setText("ERROR");
         }
 
@@ -55,11 +53,8 @@ public class QuestDetails extends Activity {
         // Create Markers
         GoogleMap aMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
 
-        lObj = new LatLng(lQuest.getQuestObjective().getLat(), lQuest.getQuestObjective().getLon());
+        lObj = new LatLng(lQuest.getQuestObjectiveLat(), lQuest.getQuestObjectiveLon());
         Marker questObjective = aMap.addMarker(new MarkerOptions().position(lObj).title("Quest Objective"));
-
-        lGiv = new LatLng(lQuest.getQuestGiver().getLat(), lQuest.getQuestGiver().getLon());
-        Marker questGiver = aMap.addMarker(new MarkerOptions().position(lGiv).title("Quest Giver"));
 
         aMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
 
@@ -70,9 +65,9 @@ public class QuestDetails extends Activity {
                     initialZoom = true;
                     GoogleMap aMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
 
-                    LatLngBounds bounds = LatLngBounds.builder().include(lGiv).include(lObj).build();
-
-                    CameraUpdate aUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+                    LatLngBounds bounds = LatLngBounds.builder().include(lObj).build();
+                    CameraPosition aPos = CameraPosition.builder().target(lObj).zoom(aMap.getMaxZoomLevel ()).build();
+                    CameraUpdate aUpdate = CameraUpdateFactory.newCameraPosition(aPos);
 
                     aMap.animateCamera(aUpdate);
                 }
