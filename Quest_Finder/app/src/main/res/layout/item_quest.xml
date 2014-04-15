@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,7 +10,9 @@
         android:text="Title"
         android:id="@+id/title"
         android:textIsSelectable="false"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageListIcon" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,6 +20,17 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Posted By: "
         android:id="@+id/createdBy"
-        android:password="false" />
+        android:password="false"
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/imageListIcon" />
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageListIcon"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

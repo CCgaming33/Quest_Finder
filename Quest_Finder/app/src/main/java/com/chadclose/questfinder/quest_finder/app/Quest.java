@@ -24,6 +24,9 @@ public class Quest implements Serializable {
     private float questObjectiveLon;
     private String title;
     private String questGiver;
+    private String questGiverIconURL;
+    private String questLocationImageURL;
+
 
     public Quest(ParseObject aObj)
     {
@@ -58,6 +61,8 @@ public class Quest implements Serializable {
             e.printStackTrace();
         }
         questGiver = aQuestGiver.getString("name");
+        questGiverIconURL = aQuestGiver.getString("imageUrl");
+        questLocationImageURL =  aObj.getString("locationImageUrl");
     }
 
     public String getTitle()
@@ -128,5 +133,9 @@ public class Quest implements Serializable {
     {
         return objId;
     }
+
+    public String getGiverIconURL() { return questGiverIconURL; }
+
+    public String getQuestLocationImageURL() { return questLocationImageURL; }
 
 }

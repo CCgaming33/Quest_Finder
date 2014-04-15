@@ -176,6 +176,8 @@ public class QuestPage extends Activity {
         ListView lQuestList = (ListView)findViewById(R.id.questList);
         filterAlignment();
         QuestAdapter questListAdapater = new QuestAdapter(this, questList);
+
+
         lQuestList.setAdapter(questListAdapater);
 
         // Start Progress Bar

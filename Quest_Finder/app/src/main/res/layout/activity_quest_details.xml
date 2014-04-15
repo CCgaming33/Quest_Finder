@@ -14,9 +14,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Quest Name"
         android:id="@+id/questName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageIcon" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,8 +25,8 @@
         android:text="Posted By: "
         android:id="@+id/textView2"
         android:layout_below="@+id/questName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@+id/questName"
+        android:layout_alignStart="@+id/questName" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,10 +35,10 @@
         android:text="Some Descriptions"
         android:id="@+id/description"
         android:layout_below="@+id/textView7"
+        android:layout_alignRight="@+id/mapView"
+        android:layout_alignEnd="@+id/mapView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView7"
-        android:layout_alignEnd="@+id/textView7" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,10 +46,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Person's Name"
         android:id="@+id/postedBy"
-        android:layout_below="@+id/questName"
+        android:layout_above="@+id/textView7"
         android:layout_toRightOf="@+id/textView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toLeftOf="@+id/questAction" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,10 +56,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Descripition:"
         android:id="@+id/textView7"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/postedBy"
-        android:layout_below="@+id/textView2" />
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
     <fragment
         android:layout_width="wrap_content"
@@ -69,21 +67,31 @@
         android:id="@+id/mapView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/description"
-        android:layout_alignEnd="@+id/description"
-        android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/description" />
+        android:layout_below="@+id/description"
+        android:layout_alignRight="@+id/questAction"
+        android:layout_alignEnd="@+id/questAction" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Action"
         android:id="@+id/questAction"
-        android:layout_alignRight="@+id/postedBy"
-        android:layout_alignEnd="@+id/postedBy"
-        android:layout_alignBottom="@+id/postedBy"
-        android:onClick="onActionClick" />
+        android:onClick="onActionClick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageIcon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_launcher"
+        android:layout_above="@+id/description"
+        android:maxHeight="50dp" />
 
 
 </RelativeLayout>

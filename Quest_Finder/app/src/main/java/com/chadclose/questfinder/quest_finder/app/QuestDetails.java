@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -83,6 +84,18 @@ public class QuestDetails extends Activity {
 
         // Set action button Text
         setActionButton();
+
+        //Load questgiver picture
+
+        // get the imageView (at our content layout)
+        ImageView imgView = (ImageView) findViewById(R.id.imageIcon);
+
+        // the tag will hold the url to our image
+        String aUrl = loadQuest.getGiverIconURL();
+        if(!aUrl.equals("") || aUrl != null) {
+            imgView.setTag(aUrl);
+            new DownloadImage().execute(imgView);
+        }
 
 
     }
