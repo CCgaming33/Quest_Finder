@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chadclose.questfinder.quest_finder.app" >
 
+
+    <uses-feature android:name="android.hardware.camera"></uses-feature>
+
     <application
         android:name="com.chadclose.questfinder.quest_finder.app.MyApplication"
         android:allowBackup="true"
