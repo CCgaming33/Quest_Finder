@@ -44,6 +44,7 @@ public class QuestDetails extends Activity {
         TextView lPostedBy = (TextView)findViewById(R.id.postedBy);
         TextView lDescription = (TextView)findViewById(R.id.description);
 
+        // Set the text views if a quest was loaded
         if(loadQuest!=null)
         {
             lQuestName.setText(loadQuest.getTitle());

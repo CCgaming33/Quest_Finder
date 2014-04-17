@@ -23,6 +23,7 @@ public class DownloadImage extends AsyncTask<ImageView, Void, Bitmap> {
     }
 
     protected Bitmap doInBackground(ImageView... images) {
+        // Obtain the URl and began loading the bimMap
         mImage = images[0];
         String url = (String)mImage.getTag();
         return loadImageFromNetwork(url);
