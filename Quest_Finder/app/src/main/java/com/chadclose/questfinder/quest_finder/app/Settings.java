@@ -1,7 +1,10 @@
 package com.chadclose.questfinder.quest_finder.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 public class Settings extends Activity {
@@ -79,6 +83,21 @@ public class Settings extends Activity {
         });
 
 
+    }
+
+
+    public void updateLocationClick(View view)
+    {
+        // Update the users lat and long
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location != null) {
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            ParseUser yourUser = ParseUser.getCurrentUser();
+            yourUser.put("location", new ParseGeoPoint(latitude, longitude));
+            yourUser.saveInBackground();
+        }
     }
 
 
